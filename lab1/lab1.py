@@ -1,6 +1,9 @@
 def num(s):
-	try: 
-		return float(s)
+	try:
+		if '.' in s:
+			return float(s)
+		else:
+			return int(s)
 	except ValueError:
 		raise TypeError
 
