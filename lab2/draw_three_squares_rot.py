@@ -12,6 +12,4 @@ sq1.draw(w)
 sq2.draw(w)
 sq3.draw(w)
 
-# keep the window open. should be fixed, needing to do this outside 
-# of the class itself is ugly
 w.mainloop()
