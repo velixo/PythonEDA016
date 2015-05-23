@@ -155,24 +155,24 @@ class Square:
 		self.alpha = 0
 
 	def get_x(self):
-		"""Tar reda på x-koordinaten."""
+		"""Returns the x-coordinate."""
 		return self.x
 
 	def get_y(self):
-		"""Tar reda på y-koordinaten."""
+		"""Returns the y-coordinate."""
 		return self.y
 
 	def get_side(self):
-		"""Tar reda på sidlängden."""
+		"""Returns the side length."""
 		return self.side
 
 	def move(self, dx, dy):
-		"""Flyttar kvadraten relativt det aktuella läget."""
+		"""Moves the square relative to its current position."""
 		self.x += dx
 		self.y += dy
 
 	def set_side(self, side):
-		"""Ändrar sidlängden."""
+		"""Changes the squares side length."""
 		self.side = side
 
 
@@ -201,9 +201,9 @@ class Square:
 
 
 	def erase(self, w : SimpleWindow):
-		"""Raderar bilden av kvadraten. Kvadraten får inte flyttas mellan uppritning
-				och radering. Raderingen görs genom att bilden ritas över med vit färg,
-				så även korsande linjer kommer att raderas."""
+		"""Erases the square. The square must not be moved between drawing and erasing it.
+			Erasing is performed by drawing the square with white color, so crossing
+			lines will be erased as well."""
 		oldcol = w.get_line_color
 		w.set_line_color("#fff")
 		draw(w)
