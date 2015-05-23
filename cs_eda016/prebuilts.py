@@ -25,6 +25,8 @@ class SimpleWindow:
 		self.last_event = None
 		self.last_key = None
 
+		self.delays_list = [0]
+
 	def get_width(self):
 		"""Returns the width of the window."""
 		return self.width
@@ -129,6 +131,11 @@ class SimpleWindow:
 			currms = dt.day*24*60*60*1000 + dt.hour*60*1000 + dt.second*1000 + dt.microsecond*0.001
 			timediff = currms - startms
 
+	def _delay(self, ms): # this method might be needed in order to hide canvas.after()
+		"""Waits for a specified time."""
+		last = self.delays_list[len(self.delays_list)-1]
+		self.delays_list.append(last + ms)
+
 
 
 
@@ -204,6 +211,10 @@ class Square:
 		w.line_to(self.x + round(r * math.cos(self.alpha + pi4)),
 				  self.y + round(r * math.sin(self.alpha + pi4)))
 
+	def _draw(self, w : SimpleWindow): # this method might be needed in order to hide canvas.after()
+		side = self.side
+		exec_time = w.delays_list[len(w.delays_list) - 1]
+		w.canvas.after(exec_time, draw, self, w, side)
 
 	def erase(self, w : SimpleWindow):
 		"""Erases the square. The square must not be moved between drawing and erasing it.
