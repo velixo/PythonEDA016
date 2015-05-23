@@ -1,5 +1,6 @@
 import tkinter
 import math
+import threading
 from datetime import datetime
 
 class SimpleWindow:
@@ -11,6 +12,8 @@ class SimpleWindow:
 		self.root = tkinter.Tk()
 		self.root.resizable(width=False, height=False)
 		self.root.title(title)
+		self.canvas = tkinter.Canvas(self.root, width = width, height = height)
+		self.canvas.pack()
 
 		self.width = width
 		self.height = height
@@ -21,10 +24,6 @@ class SimpleWindow:
 
 		self.last_event = None
 		self.last_key = None
-		
-		self.canvas = tkinter.Canvas(self.root, width = width, height = height)
-		self.canvas.pack()
-		#self.canvas.mainloop()
 
 	def get_width(self):
 		"""Returns the width of the window."""
@@ -183,10 +182,13 @@ class Square:
 		"""Rotates the square counter-clockwise around its center by beta degrees."""
 		self.alpha -= beta * math.pi / 180
 
-	def draw(self, w : SimpleWindow):
+	def draw(self, w : SimpleWindow, side=None):
 		"""Draws the square."""
+		if side == None:
+			side = self.side
+
 		pi4 = math.pi / 4;
-		r = self.side / 2 * math.sqrt(2);
+		r = side / 2 * math.sqrt(2);
 		w.move_to(self.x + round(r * math.cos(self.alpha + pi4)),
 				  self.y + round(r * math.sin(self.alpha + pi4)))
 		
