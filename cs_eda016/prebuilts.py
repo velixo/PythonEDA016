@@ -133,16 +133,19 @@ class SimpleWindow:
 
 
 
-	def read_mouse_pos(event):
+	def read_mouse_pos(self, event):
 		self.mousex = event.x
 		self.mousey = event.y
 		self.last_event = SimpleWindow.mouse_event
 		self.freeze = False
 
-	def read_keyboard(event):
+	def read_keyboard(self, event):
 		self.last_key = event.char
 		self.last_event = SimpleWindow.key_event
 		self.freeze = False
+
+	def mainloop(self):
+		self.canvas.mainloop()
 
 
 

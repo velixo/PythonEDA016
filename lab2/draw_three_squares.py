@@ -11,4 +11,4 @@ sq3.draw(w)
 
 # keep the window open. should be fixed, needing to do this outside 
 # of the class itself is ugly
-w.canvas.mainloop()
+w.mainloop()
