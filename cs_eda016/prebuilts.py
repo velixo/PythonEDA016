@@ -94,11 +94,11 @@ class SimpleWindow:
 		while self.freeze:
 			pass
 
-	def get_mouseX(self):
+	def get_mouse_x(self):
 		"""Returns the mouse x coordinate at the last mouse click."""
 		return self.mousex
 
-	def get_mouseY(self):
+	def get_mouse_y(self):
 		"""Returns the mouse y coordinate at the last mouse click."""
 		return self.mousey
 
