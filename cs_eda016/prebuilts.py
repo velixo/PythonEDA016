@@ -183,20 +183,44 @@ class Square:
 		"""Ritar kvadraten."""
 		pi4 = math.pi / 4;
 		r = self.side / 2 * math.sqrt(2);
-		w.move_to(self.x + round(r * math.cos(self.alpha + pi4)),
-				  self.y + round(r * math.sin(self.alpha + pi4)))
+		x0 = self.x + round(r * math.cos(self.alpha + pi4))
+		y0 = self.y + round(r * math.sin(self.alpha + pi4))
+		x1 = self.x + round(r * math.cos(self.alpha + 3 * pi4))
+		y1 = self.y + round(r * math.sin(self.alpha + 3 * pi4))
+		x2 = self.x + round(r * math.cos(self.alpha + 5 * pi4))
+		y2 = self.y + round(r * math.sin(self.alpha + 5 * pi4))
+		x3 = self.x + round(r * math.cos(self.alpha + 7 * pi4))
+		y3 = self.y + round(r * math.sin(self.alpha + 7 * pi4))
+		x4 = self.x + round(r * math.cos(self.alpha + pi4))
+		y4 = self.y + round(r * math.sin(self.alpha + pi4))
+
+		print('(self.x, self.y) = ' + str((self.x, self.y)))
+		print('(x0, y0) = ' + str((x0, y0)))
+		print('(x1, y1) = ' + str((x1, y1)))
+		print('(x2, y2) = ' + str((x2, y2)))
+		print('(x3, y3) = ' + str((x3, y3)))
+		print('(x4, y4) = ' + str((x4, y4)))
+
+		w.move_to(x0, y0)
+		w.line_to(x1, y1)
+		w.line_to(x2, y2)
+		w.line_to(x3, y3)
+		w.line_to(x4, y4)
+
+#		w.move_to(self.x + round(r * math.cos(self.alpha + pi4)),
+#				  self.y + round(r * math.sin(self.alpha + pi4)))
 		
-		w.line_to(self.x + round(r * math.cos(self.alpha + 3 * pi4)),
-				  self.y + round(r * math.sin(self.alpha + 3 * pi4)))
+#		w.line_to(self.x + round(r * math.cos(self.alpha + 3 * pi4)),
+#				  self.y + round(r * math.sin(self.alpha + 3 * pi4)))
 		
-		w.line_to(self.x + round(r * math.cos(self.alpha + 5 * pi4)),
-				  self.y + round(r * math.sin(self.alpha + 5 * pi4)))
+#		w.line_to(self.x + round(r * math.cos(self.alpha + 5 * pi4)),
+#				  self.y + round(r * math.sin(self.alpha + 5 * pi4)))
 		
-		w.line_to(self.x + round(r * math.cos(self.alpha + 7 * pi4)),
-				  self.y + round(r * math.sin(self.alpha + 7 * pi4)))
+#		w.line_to(self.x + round(r * math.cos(self.alpha + 7 * pi4)),
+#				  self.y + round(r * math.sin(self.alpha + 7 * pi4)))
 		
-		w.line_to(self.x + round(r * math.cos(self.alpha + pi4)),
-				  self.y + round(r * math.sin(self.alpha + pi4)))
+#		w.line_to(self.x + round(r * math.cos(self.alpha + pi4)),
+#				  self.y + round(r * math.sin(self.alpha + pi4)))
 
 
 	def erase(self, w : SimpleWindow):
