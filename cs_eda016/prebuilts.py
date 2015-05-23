@@ -120,18 +120,7 @@ class SimpleWindow:
 		"""Returns the key that was pressed on a key event."""
 		return self.last_key
 
-
-	def delay(self, ms):
-		"""Wait for a specified time."""
-		dt = datetime.now()
-		startms = dt.day*24*60*60*1000 + dt.hour*60*1000 + dt.second*1000 + dt.microsecond*0.001
-		timediff = 0
-		while timediff < ms:
-			dt = datetime.now()
-			currms = dt.day*24*60*60*1000 + dt.hour*60*1000 + dt.second*1000 + dt.microsecond*0.001
-			timediff = currms - startms
-
-	def _delay(self, ms): # this method might be needed in order to hide canvas.after()
+	def delay(self, ms): # this method might be needed in order to hide canvas.after()
 		"""Waits for a specified time."""
 		last = self.delays_list[len(self.delays_list)-1]
 		self.delays_list.append(last + ms)
@@ -189,7 +178,12 @@ class Square:
 		"""Rotates the square counter-clockwise around its center by beta degrees."""
 		self.alpha -= beta * math.pi / 180
 
-	def draw(self, w : SimpleWindow, side=None):
+	def draw(self, w : SimpleWindow): # this method might be needed in order to hide canvas.after()
+		side = self.side
+		exec_time = w.delays_list[len(w.delays_list) - 1]
+		w.canvas.after(exec_time, self._draw, w, side)
+
+	def _draw(self, w : SimpleWindow, side=None):
 		"""Draws the square."""
 		if side == None:
 			side = self.side
@@ -210,11 +204,6 @@ class Square:
 		
 		w.line_to(self.x + round(r * math.cos(self.alpha + pi4)),
 				  self.y + round(r * math.sin(self.alpha + pi4)))
-
-	def _draw(self, w : SimpleWindow): # this method might be needed in order to hide canvas.after()
-		side = self.side
-		exec_time = w.delays_list[len(w.delays_list) - 1]
-		w.canvas.after(exec_time, draw, self, w, side)
 
 	def erase(self, w : SimpleWindow):
 		"""Erases the square. The square must not be moved between drawing and erasing it.
