@@ -3,6 +3,7 @@ from cs_eda016.prebuilts import *
 
 print('Creating SimpleWindow...')
 w = SimpleWindow(600, 600, 'DrawSquare')
+w.open()
 print('Creating Square...')
 sq1 = Square(0, 0, 200)
 sq2 = Square(300, 300, 200)
