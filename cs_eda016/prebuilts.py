@@ -11,9 +11,6 @@ class SimpleWindow:
 		self.root = tkinter.Tk()
 		self.root.resizable(width=False, height=False)
 		self.root.title(title)
-		
-		self.canvas = tkinter.Canvas(self.root, width = width, height = height)
-		self.canvas.pack()
 
 		self.width = width
 		self.height = height
@@ -24,6 +21,10 @@ class SimpleWindow:
 
 		self.last_event = None
 		self.last_key = None
+		
+		self.canvas = tkinter.Canvas(self.root, width = width, height = height)
+		self.canvas.pack()
+		#self.canvas.mainloop()
 
 	def get_width(self):
 		"""Returns the width of the window."""
