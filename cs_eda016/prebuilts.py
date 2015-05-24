@@ -57,6 +57,7 @@ class SimpleWindow:
 
 	def line_to(self, x, y):
 		"""Moves the pen to a new position while drawing a line."""
+		print("pencol: " + self.pencol)
 		self.canvas.create_line(self.penx, self.peny, x, y, fill=self.pencol, width=self.penw)
 		self.penx = x
 		self.peny = y
@@ -79,6 +80,7 @@ class SimpleWindow:
 
 	def set_line_color(self, col):
 		"""Sets the line color."""
+		print('new linecol: ' + col)
 		self.pencol = col
 
 	def get_line_width(self):
@@ -89,11 +91,13 @@ class SimpleWindow:
 		"""Returns the current line color."""
 		return self.pencol
 
-	def listen_for_mouse_click(self, extra_func=None, args=None):
+	def listen_for_mouse_click(self, extra_func = None, *args):
 		"""Listens for mouse clicks. """
-		self.freeze = True
-		if extra_func!=None:
-			self.canvas.bind("<Button-1>", lambda event, arg=(extra_func, args): self.on_mouse_down(event, arg[0], arg[1]))
+		if extra_func != None:
+			if args != None:
+				self.canvas.bind("<Button-1>", lambda event: self.on_mouse_down(event, extra_func, *args))
+			else:
+				self.canvas.bind("<Button-1>", lambda event: self.on_mouse_down(event, extra_func))
 		else:
 			self.canvas.bind("<Button-1>", self.on_mouse_down)
 		self.canvas.pack()
@@ -111,8 +115,6 @@ class SimpleWindow:
 		self.canvas.bind("<Button-1>", self.on_mouse_down)
 		self.canvas.bind("<Key>", self.read_keyboard)
 		self.canvas.pack()
-		while self.freeze:
-			pass
 
 	def get_event_type(self):
 		"""Returns the type of the last event."""
@@ -130,12 +132,15 @@ class SimpleWindow:
 
 
 
-	def on_mouse_down(self, event, extra_func=None, args=None):
+	def on_mouse_down(self, event, extra_func=None, *args):
 		self.mousex = event.x
 		self.mousey = event.y
 		self.last_event = SimpleWindow.mouse_event
 		if extra_func != None:
-			extra_func(args)
+			if args != None:
+				extra_func(*args)
+			else:
+				extra_func()
 
 	def read_keyboard(self, event):
 		self.last_key = event.char
@@ -180,12 +185,12 @@ class Square:
 		self.alpha -= beta * math.pi / 180
 
 	def draw(self, w : SimpleWindow):
+		"""Draws the square."""
 		side = self.side
 		exec_time = w.delays_list[len(w.delays_list) - 1]
 		w.canvas.after(exec_time, self._draw, w, side)
 
 	def _draw(self, w : SimpleWindow, side=None):
-		"""Draws the square."""
 		if side == None:
 			side = self.side
 
@@ -207,11 +212,16 @@ class Square:
 				  self.y + round(r * math.sin(self.alpha + pi4)))
 
 	def erase(self, w : SimpleWindow):
+		oldcol = w.get_line_color()
+		exec_time = w.delays_list[len(w.delays_list) - 1]
+		w.canvas.after(exec_time, self._erase, w)
+		w.canvas.after(exec_time, w.set_line_color, oldcol)
+
+
+	def _erase(self, w : SimpleWindow):
 		"""Erases the square. The square must not be moved between drawing and erasing it.
 			Erasing is performed by drawing the square with white color, so crossing
 			lines will be erased as well."""
-		oldcol = w.get_line_color
 		w.set_line_color("#fff")
-		draw(w)
-		w.set_line_color(oldcol)
+		self.draw(w)
 
