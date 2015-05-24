@@ -24,6 +24,9 @@ class SimpleWindow:
 
 		self.last_event = None
 		self.last_key = None
+		self.mousex = -1
+		self.mousey = -1
+		self.freeze = False
 
 		self.delays_list = [0]
 
@@ -86,13 +89,14 @@ class SimpleWindow:
 		"""Returns the current line color."""
 		return self.pencol
 
-	def wait_for_mouse_click(self):
-		"""Waits for a mouse click."""
-		self.freeze = False
-		self.canvas.bind("<Button-1>", read_mouse_pos)
+	def listen_for_mouse_click(self, extra_func=None, args=None):
+		"""Listens for mouse clicks. """
+		self.freeze = True
+		if extra_func!=None:
+			self.canvas.bind("<Button-1>", lambda event, arg=(extra_func, args): self.on_mouse_down(event, arg[0], arg[1]))
+		else:
+			self.canvas.bind("<Button-1>", self.on_mouse_down)
 		self.canvas.pack()
-		while self.freeze:
-			pass
 
 	def get_mouse_x(self):
 		"""Returns the mouse x coordinate at the last mouse click."""
@@ -104,23 +108,21 @@ class SimpleWindow:
 
 	def wait_for_event(self):
 		"""Waits for event (mouse click or key press)."""
-		self.canvas.bind("<Button-1>", read_mouse_pos)
-		self.canvas.bind("<Key>", read_keyboard)
+		self.canvas.bind("<Button-1>", self.on_mouse_down)
+		self.canvas.bind("<Key>", self.read_keyboard)
 		self.canvas.pack()
 		while self.freeze:
 			pass
-
 
 	def get_event_type(self):
 		"""Returns the type of the last event."""
 		return self.last_event
 
-
 	def get_key(self):
 		"""Returns the key that was pressed on a key event."""
 		return self.last_key
 
-	def delay(self, ms): # this method might be needed in order to hide canvas.after()
+	def delay(self, ms):
 		"""Waits for a specified time."""
 		last = self.delays_list[len(self.delays_list)-1]
 		self.delays_list.append(last + ms)
@@ -128,16 +130,16 @@ class SimpleWindow:
 
 
 
-	def read_mouse_pos(self, event):
+	def on_mouse_down(self, event, extra_func=None, args=None):
 		self.mousex = event.x
 		self.mousey = event.y
 		self.last_event = SimpleWindow.mouse_event
-		self.freeze = False
+		if extra_func != None:
+			extra_func(args)
 
 	def read_keyboard(self, event):
 		self.last_key = event.char
 		self.last_event = SimpleWindow.key_event
-		self.freeze = False
 
 	def mainloop(self):
 		self.canvas.mainloop()
@@ -173,12 +175,11 @@ class Square:
 		"""Changes the squares side length."""
 		self.side = side
 
-
 	def rotate(self, beta):
 		"""Rotates the square counter-clockwise around its center by beta degrees."""
 		self.alpha -= beta * math.pi / 180
 
-	def draw(self, w : SimpleWindow): # this method might be needed in order to hide canvas.after()
+	def draw(self, w : SimpleWindow):
 		side = self.side
 		exec_time = w.delays_list[len(w.delays_list) - 1]
 		w.canvas.after(exec_time, self._draw, w, side)
